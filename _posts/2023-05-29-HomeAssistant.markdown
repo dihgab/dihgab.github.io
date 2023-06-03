@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Automação residencial: Introdução ao Home Assistant"
+title: "Automação Residencial: Introdução ao Home Assistant"
 date: 2023-05-29 14:30:00 -0300
 categories: [Automação Residencial, Home Assistant]
 tags: automação homeassistant hass
