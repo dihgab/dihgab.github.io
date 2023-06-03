@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Automação residencial: MQTT"
-date: 2021-06-29 14:00:00 -0300
+title: "Automação Residencial: MQTT"
+date: 2023-06-03 18:32:00 -0300
 categories: [Automação Residencial, MQTT]
 tags: automação mqtt hass homeassistant broker
 image: "/assets/img/mqtt.jpg"
