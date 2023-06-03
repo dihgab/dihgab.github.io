@@ -1,0 +1,73 @@
+---
+layout: post
+title: "Automação residencial: MQTT"
+date: 2021-06-29 14:00:00 -0300
+categories: [Automação Residencial, MQTT]
+tags: automação mqtt hass homeassistant broker
+image: "/assets/img/mqtt.jpg"
+---
+
+> Message Queuing Telemetry Transport.
+
+MQTT é um protocolo de mensagens feito pela IBM para a internet das coisas, *IoT*. Foi desenhado para ser extremamente leve, possuindo duas funções básicas, publicar (*publish*) e inscrever-se/assinar (*subscribe*). É ideal para ser usado em dispositivos com pequeno poder de processamento, pouca banda disponível e alimentação energética limitada (baterias).
+
+## Broker
+
+O *broker* é o centro do MQTT. É a parte responsável por receber todas as mensagens e mantê-las disponíveis para os assinantes. Tem seu funcionamento baseado em tópicos, em que cada tópico normalmente carrega uma informação específica. Para simplificar, gosto de pensar que o *broker* é um enorme quadro de avisos, em que cada coluna representa um tópico. 
+
+## Assinantes
+
+Os dispositivos assinantes são aqueles que lêem e escrevem as informações no *broker*. É considerada uma boa prática escrever informações em um tópico e ler as informações de outro. 
+
+Tomemos como exemplo uma porta:
+
+* <code>Sala/Porta/Estado</code> é o tópico responsável por armazenar a informação se a porta está aberta ou fechada.
+
+* <code>Sala/Porta/Comando</code> é o tópico responsável dizer à porta se ela deve executar o comando de abrir ou fechar.
+
+Ou seja, dentro do tópico **Sala** há o subtópico **Porta**, que é subdividido em outros dois, **Estado** e **Comando**. Tal divisão torna-se bastante útil para manter o sistema organizado e também para não ocorrer confusão ou erros com os comandos. Por exemplo, pode ser interessante que uma lâmpada seja capaz de acompanhar o **Estado** da porta, tendo seu acendimento simultâneo à abertura da porta. Ao mesmo tempo, não é interessante que esta luz seja capaz de mandar o **Comando** para a porta abrir. Com a divisão correta dos tópicos tal erro é evitado.
+
+## Funções
+
+### Publish 
+
+É a função publicar. É usando esta função que uma informação é escrita no *broker* e torna-se disponível para todos que podem ler aquele tópico. 
+
+É interessante conhecer a opção <code>retain</code> para mensagens publicadas. Com tal opção ligada, a mensagem permanece disponível no tópico até que outra mensagem a substitua. Isto é extremamente útil para evitar que um dispositivo fique sem informação alguma caso tenha se conectado a um tópico sem assinantes, caso em que as mensagens são automaticamente descartadas.
+
+### Subscribe
+
+Usando-se a função de assinar, um dispositivo torna-se capaz de acompanhar um tópico e ler tudo o que for escrito nele. Caso um dispositivo precise ler mais de um tópico, é necessário assinar cada tópico deles individualmente ou assinar o tópico acima, para casos de subtópicos.
+
+## Instalação
+
+### Eclipse Mosquitto (broker)
+
+<center>
+<img src="/assets/img/mosquitto.png" alt="Mosquitto e alguns clientes." style="width:50%"> 
+<br><small>Mosquitto e alguns clientes.</small>
+</center>
+
+É um programa de código aberto que funciona como *broker* MQTT. É de fácil instalação e funciona muito bem com o Home Assistant, estando disponível também como *addon*. Mesmo que normalmente usado apenas em LAN, recomendo sempre o uso de autenticação com usuário e senha para acessar o Mosquitto.
+
+Como addon, basta ir na lista do Home Assistant e instalar o *Mosquitto broker*. Nas configurações após a instalação é possível definir login e senha.
+
+O Mosquitto pode ser instalado via *snap* ou Docker. Para mais informações, consulte [https://mosquitto.org/download/](https://mosquitto.org/download/).
+
+### Paho MQTT (cliente)
+
+Para a configuração de clientes usando <code>Python</code>, recomendo a biblioteca [*Paho-MQTT*](https://pypi.org/project/paho-mqtt/).
+
+### PubSubClient (cliente)
+
+Caso esteja usando para clientes <code>Arduino</code>, <code>NodeMCU</code> ou <code>ESP826</code>, recomendo a biblioteca [PubSubclient](https://www.arduino.cc/reference/en/libraries/pubsubclient/).
+
+### Tasmota (cliente)
+
+<center>
+<img src="/assets/img/tasmota.png" alt="Tela inicial do Tasmota." style="width:50%"> 
+<br><small>Tela inicial do Tasmota.</small>
+</center>
+
+Por fim, caso esteja usando <code>ESP8266</code> ou até dispositivos de marcas como <code>Sonoff</code>, é possível utilizar o *firmware* [Tasmota](https://tasmota.github.io/). Solução excelente para quem quer fugir dos *firmwares* estrangeiros e querem manter o controle total sobre seus dispositivos, não dependendo de entes na nuvem ou de empresas privadas. Por permitir que a configuração seja feita *OTA* (*over the air*), esta solução é bastante interessante e confiável, além de fácil manutenção.
+
