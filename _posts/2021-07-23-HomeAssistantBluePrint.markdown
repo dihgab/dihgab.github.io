@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Automação residencial: Como fazer uma planta baixa no HomeAssistant"
-date: 2021-07-23 19:30:00 -0300
+title: "2. Automação Residencial: Planta baixa no HomeAssistant"
+date: 2023-06-07 18:27:00 -0300
 categories: [Automação Residencial, Home Assistant]
 tags: automação hass homeassistant plantabaixa
 image: "/assets/img/hass1_bg.png"
