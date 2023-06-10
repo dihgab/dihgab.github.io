@@ -14,7 +14,7 @@ image: "/assets/img/Systemctl-24-7.png"
 
 O comando `systemctl` é o gerenciador do `systemd`, que gerencia o Linux. É uma ferramenta essencial para administração de servidores Linux e permite total controle sobre os serviços em execução no sistema. O `systemctl` pode ser usado para controlar um serviço pelos comandos `status`, `start`, `stop` e `restart`.
 
-Um serviço do sistema operacional pode ser usado para manter bots no ar ou para qualquer outra coisa que seja executada sempre ou em intervalos bem definidos. O RastreioBot, por exemplo, possui dois serviços.
+Um serviço do sistema operacional pode ser usado para manter bots no ar ou para qualquer outra coisa que seja executada sempre ou em intervalos bem definidos, a qual possui dois serviços.
 
 #### 1. O bot que fala com as pessoas
 
@@ -22,7 +22,7 @@ Existe um serviço principal que é responsável por responder as pessoas, colet
 
 #### 2. A rotina que verifica os pacotes
 
-O segundo serviço é a rotina que verifica os pacotes, que faz a comunicação com os Correios. Esta rotina é executada usando-se um serviço do sistema operacional e é executada em intervalos definidos. Isto é, espera-se o tempo escolhido(`RestartSec`) antes de executar a rotina novamente. A vantagem desta abordagem em relação ao uso de um *cronjob* é que evita que uma rotina seja iniciada em paralelo à anterior caso ela não tenha terminado. Ou seja, não importa a duração de tempo para que o arquivo python seja executado. O tempo entre as rotinas é sempre o mesmo e não há execuções em paralelo.
+O segundo serviço é a rotina que verifica os pacotes. Esta rotina é executada usando-se um serviço do sistema operacional e é executada em intervalos definidos. Isto é, espera-se o tempo escolhido(`RestartSec`) antes de executar a rotina novamente. A vantagem desta abordagem em relação ao uso de um *cronjob* é que evita que uma rotina seja iniciada em paralelo à anterior caso ela não tenha terminado. Ou seja, não importa a duração de tempo para que o arquivo python seja executado. O tempo entre as rotinas é sempre o mesmo e não há execuções em paralelo.
 
 ## Criar um serviço
 
@@ -64,13 +64,13 @@ Defina os valores conforme sua preferência.
 
 ```
 [Unit]
-Description=RastreioBot
+Description=NameBot
 After=multi-user.target
 
 [Service]
 Type=simple
-WorkingDirectory=/usr/local/bin/RastreioBot
-ExecStart=/usr/bin/python3 /usr/local/bin/RastreioBot/rastreiobot.py
+WorkingDirectory=/usr/local/bin/NameBot
+ExecStart=/usr/bin/python3 /usr/local/bin/NameBot/namebot.py
 Restart=always
 RestartSec=10
 
@@ -78,7 +78,7 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-Serviço de nome [RastreioBot](#1-o-bot-que-fala-com-as-pessoas), localizado na pasta */usr/local/bin/RastreioBot/*, e que deve ser reiniciado em 10 segundos caso pare por algum motivo.
+Serviço de nome [NameBot](#1-o-bot-que-fala-com-as-pessoas), localizado na pasta */usr/local/bin/NameBot/*, e que deve ser reiniciado em 10 segundos caso pare por algum motivo.
 
 ### Carregar alterações
 
